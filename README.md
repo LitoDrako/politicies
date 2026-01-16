@@ -1,2 +1,0 @@
-# politicies
-apps mobiles
