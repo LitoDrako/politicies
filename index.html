@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="QotApp - Organiza tus gastos compartidos, grupos, deudas y liquidaciones de forma sencilla."
+  >
+
+  <title>QotApp - Gastos compartidos sin complicaciones</title>
+
+  <style>
+    :root {
+      --primary: #536dfe;
+      --primary-dark: #3f51d9;
+      --background: #f7f8fc;
+      --surface: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --success: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    /* =========================
+       NAVBAR
+       ========================= */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+
+      border-bottom: 1px solid var(--border);
+    }
+
+    .navbar {
+      min-height: 72px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 11px;
+
+      background: var(--primary);
+      color: white;
+
+      font-weight: 800;
+      font-size: 18px;
+
+      box-shadow: 0 6px 16px rgba(83, 109, 254, 0.25);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .nav-button {
+      padding: 10px 18px;
+
+      border-radius: 10px;
+
+      background: var(--primary);
+      color: white;
+    }
+
+    .nav-button:hover {
+      color: white;
+      background: var(--primary-dark);
+    }
+
+    /* =========================
+       HERO
+       ========================= */
+
+    .hero {
+      padding: 100px 0 90px;
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(83, 109, 254, 0.12),
+          transparent 35%
+        );
+    }
+
+    .hero-content {
+      max-width: 850px;
+      margin: 0 auto;
+
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+
+      padding: 7px 13px;
+
+      border-radius: 999px;
+
+      background: #eef1ff;
+      color: var(--primary);
+
+      font-size: 13px;
+      font-weight: 700;
+
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: clamp(42px, 7vw, 70px);
+      line-height: 1.05;
+      letter-spacing: -2.5px;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero-description {
+      max-width: 680px;
+      margin: 25px auto 0;
+
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .hero-buttons {
+      margin-top: 35px;
+
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-height: 48px;
+
+      padding: 0 24px;
+
+      border-radius: 12px;
+
+      font-weight: 700;
+      font-size: 15px;
+
+      transition: 0.2s ease;
+    }
+
+    .button-primary {
+      background: var(--primary);
+      color: white;
+
+      box-shadow: 0 8px 20px rgba(83, 109, 254, 0.25);
+    }
+
+    .button-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .button-secondary {
+      background: white;
+      border: 1px solid var(--border);
+    }
+
+    .button-secondary:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* =========================
+       FEATURES
+       ========================= */
+
+    section {
+      padding: 80px 0;
+    }
+
+    .section-header {
+      max-width: 700px;
+      margin: 0 auto 45px;
+
+      text-align: center;
+    }
+
+    .section-header h2 {
+      margin: 0 0 12px;
+
+      font-size: 36px;
+      line-height: 1.15;
+      letter-spacing: -1px;
+    }
+
+    .section-header p {
+      margin: 0;
+
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .features {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 20px;
+    }
+
+    .feature-card {
+      padding: 28px;
+
+      background: var(--surface);
+
+      border: 1px solid var(--border);
+      border-radius: 18px;
+
+      transition: 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+
+      box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 14px;
+
+      background: #eef1ff;
+      color: var(--primary);
+
+      font-size: 22px;
+
+      margin-bottom: 18px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+
+      font-size: 19px;
+    }
+
+    .feature-card p {
+      margin: 0;
+
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* =========================
+       HOW IT WORKS
+       ========================= */
+
+    .steps-section {
+      background: white;
+    }
+
+    .steps {
+      display: grid;
+
+      grid-template-columns: repeat(3, 1fr);
+
+      gap: 25px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 25px;
+    }
+
+    .step-number {
+      width: 52px;
+      height: 52px;
+
+      margin: 0 auto 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      background: var(--primary);
+      color: white;
+
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .step h3 {
+      margin: 0 0 8px;
+    }
+
+    .step p {
+      margin: 0;
+
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    /* =========================
+       CTA
+       ========================= */
+
+    .cta {
+      padding: 80px 0;
+    }
+
+    .cta-box {
+      padding: 55px 35px;
+
+      border-radius: 24px;
+
+      background: linear-gradient(
+        135deg,
+        #536dfe,
+        #6577ff
+      );
+
+      color: white;
+
+      text-align: center;
+
+      box-shadow:
+        0 20px 45px rgba(83, 109, 254, 0.25);
+    }
+
+    .cta-box h2 {
+      margin: 0 0 12px;
+
+      font-size: 34px;
+    }
+
+    .cta-box p {
+      max-width: 600px;
+
+      margin: 0 auto 28px;
+
+      opacity: 0.9;
+    }
+
+    .cta-box .button {
+      background: white;
+      color: var(--primary);
+    }
+
+    /* =========================
+       FOOTER
+       ========================= */
+
+    footer {
+      padding: 45px 0 30px;
+
+      background: #111827;
+      color: white;
+    }
+
+    .footer-content {
+      display: flex;
+
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .footer-brand {
+      max-width: 420px;
+    }
+
+    .footer-brand h3 {
+      margin: 0 0 10px;
+
+      font-size: 22px;
+    }
+
+    .footer-brand p {
+      margin: 0;
+
+      color: #9ca3af;
+      font-size: 14px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+
+      gap: 8px;
+
+      font-size: 14px;
+      color: #d1d5db;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .copyright {
+      margin-top: 35px;
+      padding-top: 20px;
+
+      border-top: 1px solid #374151;
+
+      color: #9ca3af;
+
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* =========================
+       RESPONSIVE
+       ========================= */
+
+    @media (max-width: 800px) {
+
+      nav {
+        display: none;
+      }
+
+      .features,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 70px 0;
+      }
+
+      section {
+        padding: 60px 0;
+      }
+
+      .section-header h2 {
+        font-size: 30px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="container navbar">
+
+    <a href="#" class="logo">
+      <span class="logo-icon">Q</span>
+      <span>QotApp</span>
+    </a>
+
+    <nav>
+      <a href="#funciones">Funciones</a>
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="#contacto">Contacto</a>
+      <a
+        href="privacidad_qotapp.html"
+        class="nav-button"
+      >
+        Privacidad
+      </a>
+    </nav>
+
+  </div>
+
+</header>
+
+
+<main>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="container hero-content">
+
+      <div class="badge">
+        Gastos compartidos, sin complicaciones
+      </div>
+
+      <h1>
+        Organiza tus gastos.
+        <span>Comparte sin líos.</span>
+      </h1>
+
+      <p class="hero-description">
+        QotApp te ayuda a organizar grupos, registrar gastos,
+        calcular balances y saber quién debe a quién.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a
+          href="#funciones"
+          class="button button-primary"
+        >
+          Descubre QotApp
+        </a>
+
+        <a
+          href="privacidad_qotapp.html"
+          class="button button-secondary"
+        >
+          Política de privacidad
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FEATURES -->
+
+  <section id="funciones">
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2>
+          Todo lo que necesitas para compartir gastos
+        </h2>
+
+        <p>
+          Una forma sencilla de mantener tus cuentas organizadas
+          cuando compartes gastos con otras personas.
+        </p>
+
+      </div>
+
+
+      <div class="features">
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            👥
+          </div>
+
+          <h3>
+            Grupos
+          </h3>
+
+          <p>
+            Crea grupos para viajes, pisos compartidos,
+            amigos, familia o cualquier situación en la que
+            necesites compartir gastos.
+          </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            💶
+          </div>
+
+          <h3>
+            Gastos compartidos
+          </h3>
+
+          <p>
+            Registra los gastos y decide cómo se reparten
+            entre los miembros del grupo.
+          </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            📊
+          </div>
+
+          <h3>
+            Balances
+          </h3>
+
+          <p>
+            Consulta rápidamente quién debe dinero,
+            cuánto debe y a quién debe pagárselo.
+          </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🤝
+          </div>
+
+          <h3>
+            Liquidaciones
+          </h3>
+
+          <p>
+            Registra los pagos realizados entre miembros
+            y mantén un historial de las liquidaciones.
+          </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            🔐
+          </div>
+
+          <h3>
+            Cuenta segura
+          </h3>
+
+          <p>
+            Utilizamos Firebase Authentication para gestionar
+            de forma segura el acceso a las cuentas.
+          </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+          <div class="feature-icon">
+            ⚡
+          </div>
+
+          <h3>
+            Sencillo y rápido
+          </h3>
+
+          <p>
+            Una interfaz pensada para que puedas registrar
+            y consultar tus gastos sin complicaciones.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- HOW IT WORKS -->
+
+  <section
+    id="como-funciona"
+    class="steps-section"
+  >
+
+    <div class="container">
+
+      <div class="section-header">
+
+        <h2>
+          ¿Cómo funciona?
+        </h2>
+
+        <p>
+          Empieza a organizar tus gastos en pocos pasos.
+        </p>
+
+      </div>
+
+
+      <div class="steps">
+
+        <div class="step">
+
+          <div class="step-number">
+            1
+          </div>
+
+          <h3>
+            Crea tu cuenta
+          </h3>
+
+          <p>
+            Regístrate en QotApp y configura tu perfil.
+          </p>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            2
+          </div>
+
+          <h3>
+            Crea un grupo
+          </h3>
+
+          <p>
+            Añade a las personas con las que compartes
+            los gastos.
+          </p>
+
+        </div>
+
+
+        <div class="step">
+
+          <div class="step-number">
+            3
+          </div>
+
+          <h3>
+            Controla tus cuentas
+          </h3>
+
+          <p>
+            Registra gastos, consulta balances y registra
+            las liquidaciones.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- CTA -->
+
+  <section class="cta">
+
+    <div class="container">
+
+      <div class="cta-box">
+
+        <h2>
+          Deja de hacer cuentas a mano.
+        </h2>
+
+        <p>
+          QotApp está pensado para que compartir gastos
+          sea mucho más sencillo.
+        </p>
+
+        <a
+          href="#funciones"
+          class="button"
+        >
+          Conoce QotApp
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<!-- FOOTER -->
+
+<footer id="contacto">
+
+  <div class="container">
+
+    <div class="footer-content">
+
+      <div class="footer-brand">
+
+        <h3>
+          QotApp
+        </h3>
+
+        <p>
+          Tus gastos compartidos, organizados y claros.
+        </p>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <a href="privacidad_qotapp.html">
+          Política de privacidad
+        </a>
+
+        <a href="eliminar-cuenta.html">
+          Eliminar cuenta
+        </a>
+
+        <a href="mailto:toro.mayoral.angel@gmail.com">
+          Contacto
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+      © 2026 QotApp · Angel Mayoral Toro
+
+    </div>
+
+  </div>
+
+</footer>
+
+</body>
+</html>
